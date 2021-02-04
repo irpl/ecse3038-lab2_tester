@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <style>
+      html body {
+        font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      /* .card {
+        width: 500px;
+        height: 300px;
+        border-radius: 8px;
+      } */
+      .container {
+        display: flex;
+        flex-direction: column;
+        /* justify-content: space-evenly; */
+        width: 100%;
+      }
+      .profile {
+        border: 1px solid #fff;
+        /* border: 1px solid rgb(151, 197, 183); */
+        background-color: #fff;
+        /* background-color: rgb(151, 197, 183); */
+        /* color: rgb(33, 60, 52); */
+        border-radius: 8px;
+
+        width: 550px;
+        height: 200px;
+        display: flex;
+        flex-direction: row;
+        margin: 40px auto;
+        /* margin: 20px; */
+      }
+      .left,
+      .right {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+      .left {
+        width: 35%;
+        /* background-color: aqua; */
+        /* display: flex; */
+        /* flex-direction: column; */
+        /* justify-content: space-evenly; */
+
+        /* justify-content: center; */
+        /* align-items: center; */
+        /* align-content: center; */
+      }
+      .right {
+        width: 65%;
+        margin: 0 10px 0 10px;
+        /* height: 100%; */
+        /* background-color: blueviolet; */
+        /* display: flex; */
+        /* flex-direction: column; */
+        /* align-content: space-between; */
+        /* justify-content: space-evenly; */
+      }
+      .right-username,
+      .set-profile-title {
+        text-align: center;
+        font-size: 2.5em;
+        /* margin-right: 36px; */
+        /* height: 30%; */
+        /* display: flex; */
+        /* flex-direction: column; */
+        /* align-content: flex-end;- */
+        /* margin-bottom: 10px;- */
+        /* justify-content: flex-end; */
+      }
+      .right-info {
+        display: flex;
+        justify-content: space-between;
+        /* height: 30%; */
+        /* align-items: center; */
+        font-size: 1.2em;
+      }
+      .right-info-left {
+        text-align: right;
+      }
+      .right-badges {
+        display: flex;
+        /* align-content: space-between; */
+        justify-content: space-evenly;
+        font-size: 2em;
+        /* height: 100%; */
+        /* height: 30%; */
+      }
+      .left-icon {
+        font-size: 6em;
+        display: flex;
+        /* justify-content: center; */
+        /* align-items: center; */
+        /* align-content: center; */
+        margin: 0 auto;
+      }
+      #tank-container {
+        margin: 0 auto;
+      }
+      #add-tank {
+        width: 200px;
+        height: 120px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 6em;
+        color: #ccc;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        margin: 0 auto;
+        cursor: pointer;
+      }
+      #add-tank > i {
+        margin: 0 auto;
+      }
+      .map {
+        width: 166px;
+        height: 180px;
+        /* background-color: teal; */
+      }
+      .tank {
+        display: flex;
+        width: 600px;
+        height: 180px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+        margin: 20px;
+      }
+      .tank-info {
+        font-size: 1.5em;
+        /* width: 333px; */
+        width: 100%;
+      }
+      .tank-info > div {
+        margin: 10px 20px;
+      }
+      .tank-level-container {
+        height: 100%;
+        width: 10px;
+        position: relative;
+      }
+      .tank-level {
+        width: 100%;
+        position: absolute;
+        background-color: cyan;
+        bottom: 0;
+      }
+      .tank-delete {
+        position: absolute;
+
+        right: 5px;
+        color: #777;
+        cursor: pointer;
+        height: 30px;
+        width: 30px;
+        background-color: #eee;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        border-radius: 8px;
+      }
+      .tank-delete {
+        bottom: 5px;
+      }
+      .tank-delete > i,
+      .tank-edit > i {
+        margin: 0 auto;
+      }
+      .tank-delete:hover {
+        color: red;
+      }
+      .tank-edit {
+        display: inline;
+        color: #ddd;
+        font-size: 20px;
+        margin-left: 10px;
+        /* top: 5px; */
+      }
+      .tank-edit:hover {
+        color: blue;
+      }
+      #tank-modal {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        width: 500px;
+        display: none;
+        position: absolute;
+        top: 0;
+      }
+      /* modal */
+      /* @import "https://fonts.googleapis.com/css?family=Prompt:400,700"; */
+
+      .modal {
+        /* This way it could be display flex or grid or whatever also. */
+        display: block;
+
+        /* Probably need media queries here */
+        width: 600px;
+        max-width: 100%;
+
+        height: 400px;
+        max-height: 100%;
+
+        position: fixed;
+
+        z-index: 999;
+
+        left: 50%;
+        top: 50%;
+
+        /* Use this for centering if unknown width/height */
+        transform: translate(-50%, -50%);
+
+        /* If known, negative margins are probably better (less chance of blurry text). */
+        /* margin: -200px 0 0 -200px; */
+
+        background: white;
+        /* box-shadow: 0 0 60px 10px rgba(0, 0, 0, 0.9); */
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      .closed {
+        display: none;
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 998;
+
+        background: rgba(0, 0, 0, 0.6);
+      }
+      .modal-guts {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        padding: 20px 50px 20px 20px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        margin: 0 0 20px 0;
+      }
+
+      .modal .close-button {
+        position: absolute;
+
+        /* don't need to go crazy with z-index here, just sits over .modal-guts */
+        z-index: 1;
+
+        top: 10px;
+
+        /* needs to look OK with or without scrollbar */
+        right: 20px;
+
+        border: 0;
+        background: black;
+        color: white;
+        padding: 5px 10px;
+        font-size: 1.3rem;
+      }
+
+      .open-button {
+        border: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: lightgreen;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 21px;
+      }
+
+      /* modal form */
+      input[type="color"],
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      input[type="color"] {
+        padding: 0;
+      }
+
+      input[type="submit"] {
+        width: 100%;
+        background-color: rgb(77, 166, 255);
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: rgb(0, 78, 155);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="set-profile closed" id="set-profile">
+      <div class="modal">
+        <!-- <button class="close-button" id="close-button"><i class="fas fa-times"></i></button> -->
+        <div class="modal-guts">
+          <!-- <h1>Modal Example</h1> -->
+          <form action="">
+            <div class="modal-title">
+              <div class="set-profile-title">Set Profile</div>
+            </div>
+            <div>
+              <label for="profile-username">Username</label>
+              <input required type="text" placeholder="eg.: xXDeePTooTXx" name="location" id="profile-username" />
+            </div>
+            <div>
+              <label for="profile-role">What's your role?</label>
+              <select name="role" id="profile-role">
+                <!-- <option value=""></option> -->
+                <option value="Engineer">Engineer</option>
+                <option value="Cornball">Cornball</option>
+                <option value="Software Developer">Software Developer</option>
+                <option value="Systems Admin">Systems Admin</option>
+              </select>
+            </div>
+            <div>
+              <label for="profile-color">Choose a color</label>
+              <input type="color" name="color" id="profile-color" />
+            </div>
+            <input type="submit" value="Submit" id="submit-profile" />
+            <!-- <input type="text" name="location" id="new-tank-location"> -->
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="container closed" id="container">
+      <div id="profile" class="profile">
+        <div class="left">
+          <div class="left-icon">
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+        <div class="right">
+          <!-- <div> -->
+          <div class="right-username" id="profile-card-username"></div>
+          <div class="right-info">
+            <div class="right-info-left">
+              <div>Role</div>
+              <div>Last Updated</div>
+            </div>
+            <div class="right-info-right">
+              <div id="profile-card-role"></div>
+              <div id="profile-card-last_updated"></div>
+            </div>
+            <!-- </div> -->
+          </div>
+          <div class="right-badges">
+            <i class="fas fa-bicycle"></i>
+            <i class="fas fa-hamburger"></i>
+            <i class="fas fa-flask"></i>
+            <i class="fas fa-user-astronaut"></i>
+          </div>
+        </div>
+      </div>
+
+      <div id="tank-container"></div>
+
+      <div id="add-tank">
+        <i class="fas fa-plus-square"></i>
+      </div>
+    </div>
+    <div id="tank-modal">
+      <div class="modal-content">
+        <!-- <div class="container"> -->
+        <!-- <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span> -->
+
+        <!-- </div> -->
+      </div>
+    </div>
+    <div class="modal-overlay closed" id="modal-overlay"></div>
+
+    <div class="modal closed" id="modal">
+      <button class="close-button" id="close-button"><i class="fas fa-times"></i></button>
+      <div class="modal-guts">
+        <!-- <h1>Modal Example</h1> -->
+        <form action="">
+          <div class="modal-title">
+            <h1>New Tank</h1>
+          </div>
+          <div>
+            <label for="new-tank-location">Tank Location</label>
+            <input type="text" placeholder="Cross Roads" name="location" id="new-tank-location" />
+          </div>
+          <div>
+            <label for="new-tank-lat">Latitude</label>
+            <input type="text" name="lat" id="new-tank-lat" />
+          </div>
+          <div>
+            <label for="new-tank-long">Longitude</label>
+            <input type="text" name="long" id="new-tank-long" />
+          </div>
+          <input type="submit" value="Submit" id="submit-tank" />
+          <!-- <input type="text" name="location" id="new-tank-location"> -->
+        </form>
+      </div>
+    </div>
+  </body>
+  <script src="https://kit.fontawesome.com/f0f1d79673.js" crossorigin="anonymous"></script>
+
+  <script
+    src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""
+  ></script>
+  <script>
+    // var state = {
+    //   profile: "",
+    // };
+    window.onload = function () {
+      fetch("http://localhost:3000/profile")
+        .then((res) => {
+          status = res.status;
+          return res.json();
+        })
+        .then((body) => {
+          if (status == 200) {
+            let username = body.data.username;
+            let role = body.data.role;
+            let color = body.data.color;
+            let last_updated = body.data.last_updated;
+            // ({ username, role, color, last_updated } = res);
+            console.log(username, role, color);
+            // "username" in res && "role" in res && "color" in res
+            let profile_valid = username && role && color;
+            if (profile_valid != undefined) {
+              console.log("here1");
+              init(username, role, color, last_updated);
+            } else {
+              document.getElementById("set-profile").classList.remove("closed");
+            }
+          }
+        });
+    };
+    document.getElementById("submit-profile").addEventListener("click", function (e) {
+      e.preventDefault();
+
+      let u = document.getElementById("profile-username").value;
+      let r = document.getElementById("profile-role").value;
+      let c = document.getElementById("profile-color").value;
+      console.log(u, r, c);
+      if ((u && r && c) != undefined) {
+        fetch("http://localhost:3000/profile", {
+          method: "POST",
+          body: JSON.stringify({
+            username: u,
+            role: r,
+            color: c,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        })
+          .then((res) => {
+            let status = res.status;
+            return res.json();
+          })
+          .then((res) => {
+            if (status == 200) {
+              fetch("http://localhost:3000/profile")
+                .then((res) => {
+                  let status = res.status;
+                  return res.json();
+                })
+                // .then(({ username, role, color, last_updated }) => {
+                .then((body) => {
+                  console.log("here2");
+                  init(body.data.username, body.data.role, body.data.color, body.data.last_updated);
+                });
+            }
+          });
+      } else {
+        alert("Fill out all fields");
+      }
+    });
+    // modal
+    var modal = document.querySelector("#modal");
+    var modalOverlay = document.querySelector("#modal-overlay");
+    var closeButton = document.querySelector("#close-button");
+    var openButton = document.querySelector("#add-tank");
+
+    function closeModal() {
+      modal.classList.toggle("closed");
+      modalOverlay.classList.toggle("closed");
+    }
+    modalOverlay.addEventListener("click", closeModal);
+    closeButton.addEventListener("click", closeModal);
+
+    openButton.addEventListener("click", function () {
+      modal.classList.toggle("closed");
+      modalOverlay.classList.toggle("closed");
+    });
+
+    document.getElementById("add-tank").addEventListener("click", function (e) {
+      document.getElementById("tank-modal").setAttribute("style", "display: block;");
+    });
+    document.getElementById("submit-tank").addEventListener("click", function (e) {
+      e.preventDefault();
+      console.log(document.getElementById("new-tank-location").value);
+      fetch("http://localhost:3000/data", {
+        method: "POST",
+        body: JSON.stringify({
+          location: document.getElementById("new-tank-location").value,
+          lat: document.getElementById("new-tank-lat").value,
+          long: document.getElementById("new-tank-long").value,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      })
+        .then((res) => {
+          status = res.status;
+          return res.json();
+        })
+        .then((res) => {
+          if (status == 200) {
+            closeModal();
+            getTanks();
+          } else alert("An error occured!");
+        });
+    });
+
+    function makeMap({ id, lat, long, location, percentage_full }) {
+      var tank = document.createElement("div");
+      tank.setAttribute("class", "tank card");
+      tank.setAttribute("id", `tank-${id}`);
+      document.getElementById("tank-container").appendChild(tank);
+
+      var tankEdit = document.createElement("div");
+      tankEdit.setAttribute("class", "tank-edit");
+      tankEdit.setAttribute("id", `tank-edit-${id}`);
+      tankEdit.innerHTML = `<i class="fas fa-pen-square"></i>`;
+      // document.getElementById(`tank-${id}`).appendChild(tankEdit);
+
+      var tankDel = document.createElement("div");
+      tankDel.setAttribute("class", "tank-delete");
+      tankDel.setAttribute("id", `tank-delete-${id}`);
+      tankDel.innerHTML = `<i class="fas fa-trash-alt"></i>`;
+      document.getElementById(`tank-${id}`).appendChild(tankDel);
+
+      var map = document.createElement("div");
+      map.setAttribute("class", "map");
+      map.setAttribute("id", `map-${id}`);
+      document.getElementById(`tank-${id}`).appendChild(map);
+
+      var level_container = document.createElement("div");
+      level_container.setAttribute("class", "tank-level-container");
+      document.getElementById(`tank-${id}`).appendChild(level_container);
+
+      var level = document.createElement("div");
+      level.setAttribute("class", "tank-level");
+      level.setAttribute("style", `height: ${percentage_full}%`);
+      level_container.appendChild(level);
+
+      var tankInfo = document.createElement("div");
+      tankInfo.setAttribute("class", "tank-info");
+      document.getElementById(`tank-${id}`).appendChild(tankInfo);
+
+      var tankID = document.createElement("div");
+      tankID.innerHTML = `TankID: ${id}`;
+      tankInfo.appendChild(tankID);
+
+      var tankLoc = document.createElement("div");
+      tankLoc.innerHTML = `Location: <span class="tank-loc">${location}</span>${tankEdit.outerHTML}`;
+      tankInfo.appendChild(tankLoc);
+
+      var tankLevel = document.createElement("div");
+      tankLevel.innerHTML = `Tank is ${percentage_full || 0}% full`;
+      tankInfo.appendChild(tankLevel);
+
+      // Creating map options
+      var mapOptions = {
+        center: [lat, long],
+        zoom: 16,
+        zoomControl: false,
+        attributionControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+      };
+
+      var map = new L.map(`map-${id}`, mapOptions);
+      var layer = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
+      map.addLayer(layer);
+      var marker = L.marker([lat, long]).addTo(map);
+    }
+    function hexToRgb(hex) {
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result
+        ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16),
+          }
+        : null;
+    }
+    function getTanks() {
+      fetch("http://localhost:3000/data")
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.length > 0) res.map((t) => makeMap(t));
+        })
+        .then(() => {
+          document.querySelectorAll(".tank-edit").forEach((btn) => {
+            btn.addEventListener("click", function (e) {
+              let tID = btn.id;
+              el = e.target.closest(".tank-info").querySelector(".tank-loc");
+              el.outerHTML = '<input class="tank-loc-editing" value="' + el.innerText + '">';
+
+              function inputToSpan(e) {
+                let el = e.target;
+                let val = el.value;
+                el.outerHTML = `<span class="tank-loc">${val}</span>`;
+                fetch(`http://localhost:3000/data/${tID.split("-")[2]}`, {
+                  method: "PATCH",
+                  body: JSON.stringify({
+                    location: val,
+                  }),
+                  headers: {
+                    "Content-type": "application/json",
+                  },
+                })
+                  .then((res) => {
+                    status = res.status;
+                    return res.json();
+                  })
+                  .then((res) => {
+                    if (status == 200) getTanks();
+                    else {
+                      alert("An error occured!");
+                    }
+                  });
+              }
+              document.querySelector(".tank-loc-editing").addEventListener("keyup", function (e) {
+                if (e.keyCode == 13) inputToSpan(e);
+              });
+            });
+          });
+          document.querySelectorAll(".tank-delete").forEach((btn) => {
+            btn.addEventListener("click", function (e) {
+              var conf = confirm(`Are you you want to delete this tank?\nTankID ${e.target.closest(".tank-delete").id.split("-")[2]}`);
+              if (conf) {
+                fetch(`http://localhost:3000/data/${e.target.closest(".tank-delete").id.split("-")[2]}`, {
+                  method: "DELETE",
+                })
+                  .then((res) => {
+                    status = res.status;
+                    return res.json();
+                  })
+                  .then((res) => {
+                    if (status == 200) getTanks();
+                    else alert("An error occured!");
+                  });
+              }
+            });
+          });
+        });
+    }
+    function init(username, role, color, last_updated) {
+      document.getElementById("container").setAttribute("class", "container");
+      document.getElementById("set-profile").setAttribute("class", "closed");
+      document.getElementById("tank-container").innerHTML = "";
+
+      document.getElementById("profile-card-username").innerHTML = "#" + username;
+      document.getElementById("profile-card-role").innerHTML = role;
+      document.getElementById("profile-card-last_updated").innerHTML = last_updated;
+      document.getElementById("profile").setAttribute(
+        "style",
+        `background-color: ${color}; border-color: ${color}; color: ${(function () {
+          let rgb = hexToRgb(color);
+          var sum = Math.round((parseInt(rgb["r"]) * 299 + parseInt(rgb["g"]) * 587 + parseInt(rgb["b"]) * 114) / 1000);
+          console.log(sum);
+          return sum > 128 ? "black" : "white";
+        })()}`
+      );
+
+      getTanks();
+    }
+  </script>
+</html>
