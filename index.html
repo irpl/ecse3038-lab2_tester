@@ -192,8 +192,6 @@
         justify-content: space-evenly;
         border-radius: 8px;
       }
-      .tank-delete {
-      }
       .tank-delete > i,
       .tank-edit > i {
         margin: 0 auto;
@@ -743,7 +741,7 @@
           location: document.getElementById("new-tank-location").value,
           lat: document.getElementById("new-tank-lat").value,
           long: document.getElementById("new-tank-long").value,
-          percentage_full: 0
+          percentage_full: 0,
         }),
         headers: {
           "Content-type": "application/json",
