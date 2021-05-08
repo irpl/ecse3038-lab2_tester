@@ -496,7 +496,7 @@
     // var state = {
     //   profile: "",
     // };
-    function colourNameToHex(colour) {
+    function colourNameToRGB(colour) {
       var colours = {
         aliceblue: "#f0f8ff",
         antiquewhite: "#faebd7",
@@ -641,7 +641,7 @@
         yellowgreen: "#9acd32",
       };
 
-      if (typeof colours[colour.toLowerCase()] != "undefined") return colours[colour.toLowerCase()];
+      if (typeof colours[colour.toLowerCase()] != "undefined") return hexToRgb(colours[colour.toLowerCase()]);
 
       return false;
     }
@@ -911,7 +911,7 @@
       document.getElementById("profile").setAttribute(
         "style",
         `background-color: ${color}; border-color: ${color}; color: ${(function () {
-          let rgb = colourNameToHex(color) || hexToRgb(color);
+          let rgb = colourNameToRGB(color) || hexToRgb(color);
           var sum = Math.round((parseInt(rgb["r"]) * 299 + parseInt(rgb["g"]) * 587 + parseInt(rgb["b"]) * 114) / 1000);
           console.log(sum);
           return sum > 128 ? "black" : "white";
