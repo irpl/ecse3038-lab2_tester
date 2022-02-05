@@ -39,7 +39,7 @@
         /* color: rgb(33, 60, 52); */
         /* border-radius: 8px; */
 
-        width: 550px;
+        width: 680px;
         height: 200px;
         display: flex;
         flex-direction: row;
@@ -374,7 +374,7 @@
   </head>
   <body>
     <div class="set-profile closed" id="set-profile">
-      <div class="block fixed modal">
+      <div class="block modal">
         <!-- <button class="close-button" id="close-button"><i class="fas fa-times"></i></button> -->
         <div class="modal-guts">
           <div class="modal-title">
@@ -451,7 +451,7 @@
     </div>
     <div class="modal-overlay closed" id="modal-overlay"></div>
 
-    <div class="block fixed modal closed" id="modal">
+    <div class="block modal closed" id="modal">
       <button class="block close-button" id="close-button"><i class="fas fa-times"></i></button>
       <div class="modal-guts">
         <div class="modal-title">
@@ -653,11 +653,18 @@
         })
         .then((body) => {
           if (status == 200) {
-            let username = body.data.username;
-            let role = body.data.role;
-            let color = body.data.color;
-            let last_updated = body.data.last_updated;
-            // ({ username, role, color, last_updated } = res);
+            let username = undefined;
+            let role = undefined;
+            let color = undefined;
+            let last_updated = undefined;
+            if (body.data) {
+              console.log(body.data);
+              username = body.data.username;
+              role = body.data.role;
+              color = body.data.color;
+              last_updated = body.data.last_updated;
+              // ({ username, role, color, last_updated } = res);
+            }
             console.log(username, role, color);
             // "username" in res && "role" in res && "color" in res
             let profile_valid = username && role && color;
