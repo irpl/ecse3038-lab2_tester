@@ -21,4 +21,8 @@ def helloWorld():
   return "Hello, cross-origin-world!"
 ```
 
+If you want to learn more about CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+
+Flask-CORS Documentation: https://flask-cors.readthedocs.io/en/latest/
+
 **NOTE**: Your server must be running on port 3000 for the webapp to work.
