@@ -773,30 +773,30 @@
 
       var tank = document.createElement("div");
       tank.setAttribute("class", "tank");
-      tank.setAttribute("id", `tank-${id}`);
+      tank.setAttribute("id", `tank-${_id}`);
       tankBlock.appendChild(tank);
       document.getElementById("tank-container").appendChild(tankBlock);
 
       var tankEdit = document.createElement("div");
       tankEdit.setAttribute("class", "tank-edit");
-      tankEdit.setAttribute("id", `tank-edit-${id}`);
+      tankEdit.setAttribute("id", `tank-edit-${_id}`);
       tankEdit.innerHTML = `<i class="fas fa-pen-square"></i>`;
       // document.getElementById(`tank-${id}`).appendChild(tankEdit);
 
       var tankDel = document.createElement("div");
       tankDel.setAttribute("class", "block tank-delete");
-      tankDel.setAttribute("id", `tank-delete-${id}`);
+      tankDel.setAttribute("id", `tank-delete-${_id}`);
       tankDel.innerHTML = `<i class="fas fa-trash-alt"></i>`;
-      document.getElementById(`tank-${id}`).appendChild(tankDel);
+      document.getElementById(`tank-${_id}`).appendChild(tankDel);
 
       var map = document.createElement("div");
       map.setAttribute("class", "map");
-      map.setAttribute("id", `map-${id}`);
-      document.getElementById(`tank-${id}`).appendChild(map);
+      map.setAttribute("id", `map-${_id}`);
+      document.getElementById(`tank-${_id}`).appendChild(map);
 
       var level_container = document.createElement("div");
       level_container.setAttribute("class", "tank-level-container");
-      document.getElementById(`tank-${id}`).appendChild(level_container);
+      document.getElementById(`tank-${_id}`).appendChild(level_container);
 
       var level = document.createElement("div");
       level.setAttribute("class", "tank-level");
@@ -805,10 +805,10 @@
 
       var tankInfo = document.createElement("div");
       tankInfo.setAttribute("class", "tank-info");
-      document.getElementById(`tank-${id}`).appendChild(tankInfo);
+      document.getElementById(`tank-${_id}`).appendChild(tankInfo);
 
       var tankID = document.createElement("div");
-      tankID.innerHTML = `TankID: ${id}`;
+      tankID.innerHTML = `TankID: ${_id}`;
       tankInfo.appendChild(tankID);
 
       var tankLoc = document.createElement("div");
