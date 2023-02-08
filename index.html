@@ -830,7 +830,7 @@
         doubleClickZoom: false,
       };
 
-      var map = new L.map(`map-${id}`, mapOptions);
+      var map = new L.map(`map-${_id}`, mapOptions);
       var layer = new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
       map.addLayer(layer);
       var marker = L.marker([lat, long]).addTo(map);
