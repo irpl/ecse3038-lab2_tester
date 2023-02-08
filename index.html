@@ -657,12 +657,12 @@
             let role = undefined;
             let color = undefined;
             let last_updated = undefined;
-            if (body.data) {
-              console.log(body.data);
-              username = body.data.username;
-              role = body.data.role;
-              color = body.data.color;
-              last_updated = body.data.last_updated;
+            if (body) {
+              console.log(body);
+              username = body.username;
+              role = body.role;
+              color = body.color;
+              last_updated = body.last_updated;
               // ({ username, role, color, last_updated } = res);
             }
             console.log(username, role, color);
@@ -710,7 +710,7 @@
                 // .then(({ username, role, color, last_updated }) => {
                 .then((body) => {
                   console.log("here2");
-                  init(body.data.username, body.data.role, body.data.color, body.data.last_updated);
+                  init(body.username, body.role, body.color, body.last_updated);
                 });
             }
           });
