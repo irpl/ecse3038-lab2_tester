@@ -900,7 +900,7 @@
                     return res.json();
                   })
                   .then((res) => {
-                    if (status == 200) getTanks();
+                    if (status == 204) getTanks();
                     else alert("An error occured!");
                   });
               }
