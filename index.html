@@ -701,7 +701,7 @@
             return res.json();
           })
           .then((res) => {
-            if (status == 200) {
+            if (status == 201) {
               fetch("http://localhost:8000/profile")
                 .then((res) => {
                   let status = res.status;
@@ -759,7 +759,7 @@
           return res.json();
         })
         .then((res) => {
-          if (status == 200) {
+          if (status == 201) {
             closeModal();
             getTanks();
           } else alert("An error occured!");
