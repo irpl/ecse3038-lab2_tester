@@ -878,7 +878,7 @@
                   },
                 })
                   .then((res) => {
-                    status = res.status;
+                    var status = res.status;
                     if (status == 200) {
                       return res.json();
                     } else {
@@ -902,7 +902,7 @@
                   method: "DELETE",
                 })
                   .then((res) => {
-                    status = res.status;
+                    var status = res.status;
                     if (status == 204) {
                       return res.json();
                     } else {
