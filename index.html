@@ -648,32 +648,34 @@
     window.onload = function () {
       fetch("http://localhost:8000/profile")
         .then((res) => {
-          status = res.status;
-          return res.json();
+          var status = res.status;
+          if (status == 200) {
+            return res.json();
+          } else {
+            alert("An error occured!")
+          }
         })
         .then((body) => {
-          if (status == 200) {
-            let username = undefined;
-            let role = undefined;
-            let color = undefined;
-            let last_updated = undefined;
-            if (body) {
-              console.log(body);
-              username = body.username;
-              role = body.role;
-              color = body.color;
-              last_updated = body.last_updated;
-              // ({ username, role, color, last_updated } = res);
-            }
-            console.log(username, role, color);
-            // "username" in res && "role" in res && "color" in res
-            let profile_valid = username && role && color;
-            if (profile_valid != undefined) {
-              console.log("here1");
-              init(username, role, color, last_updated);
-            } else {
-              document.getElementById("set-profile").classList.remove("closed");
-            }
+          let username = undefined;
+          let role = undefined;
+          let color = undefined;
+          let last_updated = undefined;
+          if (body) {
+            console.log(body);
+            username = body.username;
+            role = body.role;
+            color = body.color;
+            last_updated = body.last_updated;
+            // ({ username, role, color, last_updated } = res);
+          }
+          console.log(username, role, color);
+          // "username" in res && "role" in res && "color" in res
+          let profile_valid = username && role && color;
+          if (profile_valid != undefined) {
+            console.log("here1");
+            init(username, role, color, last_updated);
+          } else {
+            document.getElementById("set-profile").classList.remove("closed");
           }
         });
     };
@@ -698,21 +700,22 @@
         })
           .then((res) => {
             var status = res.status;
-            return res.json();
+            if (status == 201) {
+              return res.json();
+            } else {
+              alert("An error occured!")
+            }
           })
           .then((res) => {
-            if (status == 201) {
-              fetch("http://localhost:8000/profile")
-                .then((res) => {
-                  var status = res.status;
-                  return res.json();
-                })
-                // .then(({ username, role, color, last_updated }) => {
-                .then((body) => {
-                  console.log("here2");
-                  init(body.username, body.role, body.color, body.last_updated);
-                });
-            }
+            fetch("http://localhost:8000/profile")
+              .then((res) => {
+                return res.json();
+              })
+              // .then(({ username, role, color, last_updated }) => {
+              .then((body) => {
+                console.log("here2");
+                init(body.username, body.role, body.color, body.last_updated);
+              });
           });
       } else {
         alert("Fill out all fields");
@@ -756,13 +759,15 @@
       })
         .then((res) => {
           var status = res.status;
-          return res.json();
+          if (status == 201) {
+            return res.json();
+          } else {
+            alert("An error occured!")
+          }
         })
         .then((res) => {
-          if (status == 201) {
-            closeModal();
-            getTanks();
-          } else alert("An error occured!");
+          closeModal();
+          getTanks();
         });
     });
 
@@ -874,13 +879,14 @@
                 })
                   .then((res) => {
                     status = res.status;
-                    return res.json();
+                    if (status == 200) {
+                      return res.json();
+                    } else {
+                      alert("An error occured!")
+                    }
                   })
                   .then((res) => {
-                    if (status == 200) getTanks();
-                    else {
-                      alert("An error occured!");
-                    }
+                    getTanks();
                   });
               }
               document.querySelector(".tank-loc-editing").addEventListener("keyup", function (e) {
@@ -897,11 +903,15 @@
                 })
                   .then((res) => {
                     status = res.status;
+                    if (status == 204) {
+                      return res.json();
+                    } else {
+                      alert("An error occured!")
+                    }
                     return res.json();
                   })
                   .then((res) => {
-                    if (status == 204) getTanks();
-                    else alert("An error occured!");
+                    getTanks();
                   });
               }
             });
