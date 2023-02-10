@@ -904,14 +904,11 @@
                   .then((res) => {
                     var status = res.status;
                     if (status == 204) {
-                      return res.json();
+                      getTanks();
                     } else {
                       alert("An error occured!")
                     }
                   })
-                  .then((res) => {
-                    getTanks();
-                  });
               }
             });
           });
