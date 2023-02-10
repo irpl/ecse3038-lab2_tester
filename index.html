@@ -697,14 +697,14 @@
           },
         })
           .then((res) => {
-            let status = res.status;
+            var status = res.status;
             return res.json();
           })
           .then((res) => {
             if (status == 201) {
               fetch("http://localhost:8000/profile")
                 .then((res) => {
-                  let status = res.status;
+                  var status = res.status;
                   return res.json();
                 })
                 // .then(({ username, role, color, last_updated }) => {
@@ -755,7 +755,7 @@
         },
       })
         .then((res) => {
-          status = res.status;
+          var status = res.status;
           return res.json();
         })
         .then((res) => {
