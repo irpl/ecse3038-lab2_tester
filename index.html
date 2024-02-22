@@ -645,7 +645,7 @@
 
       return false;
     }
-    window.onload = function () {
+    function getProfile () {
       fetch("http://localhost:8000/profile")
         .then((res) => {
           var status = res.status;
@@ -679,6 +679,7 @@
           }
         });
     };
+    window.onload = getProfile;
     document.getElementById("submit-profile").addEventListener("click", function (e) {
       e.preventDefault();
 
@@ -768,6 +769,7 @@
         .then((res) => {
           closeModal();
           getTanks();
+          getProfile();
         });
     });
 
@@ -887,6 +889,7 @@
                   })
                   .then((res) => {
                     getTanks();
+                    getProfile();
                   });
               }
               document.querySelector(".tank-loc-editing").addEventListener("keyup", function (e) {
@@ -905,6 +908,7 @@
                     var status = res.status;
                     if (status == 204) {
                       getTanks();
+                      getProfile();
                     } else {
                       alert("An error occured!")
                     }
